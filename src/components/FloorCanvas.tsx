@@ -262,15 +262,13 @@ export function FloorCanvas({ width, height }: Props) {
       const dx = p.x - startPos.x;
       const dy = p.y - startPos.y;
       if (Math.abs(dx) > 2 || Math.abs(dy) > 2) { wallBodyDrag.current.moved = true; wallBodyDragWasMoved.current = true; }
-      let layer: Konva.Layer | null = null;
       Object.entries(startWalls).forEach(([id, s]) => {
         const pts = [s.x1 + dx, s.y1 + dy, s.x2 + dx, s.y2 + dy];
         const main = wallMainRefs.current[id];
         const ol = wallOutlineRefs.current[id];
-        if (main) { main.points(pts); layer = main.getLayer(); }
+        if (main) main.points(pts);
         if (ol) ol.points(pts);
       });
-      layer?.draw();
       return;
     }
     if (marqueeStart.current) {
