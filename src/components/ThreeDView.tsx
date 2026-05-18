@@ -243,7 +243,7 @@ export function ThreeDView() {
 
     const pmrem = new THREE.PMREMGenerator(renderer);
     pmrem.compileEquirectangularShader();
-    scene.environment = pmrem.fromScene(new RoomEnvironment(renderer)).texture;
+    scene.environment = pmrem.fromScene(new RoomEnvironment()).texture;
 
     // ── Camera ────────────────────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(isWalkMode ? 62 : 60, W / H, 0.05, 500);

@@ -143,7 +143,7 @@ export function FloorCanvas({ width, height }: Props) {
   const [snapTarget, setSnapTarget] = useState<{ x: number; y: number } | null>(null);
   const [hudScale, setHudScale] = useState(1);
 
-  const { activeTool, selectedItemId, selectedItemIds, selectedWallId, selectedWallIds, compareVariationId, project } = store;
+  const { activeTool, selectedItemIds, selectedWallIds, compareVariationId, project } = store;
   const isSelect = activeTool === 'select';
 
   // Track drag-start positions for all selected items (group drag)
@@ -270,7 +270,7 @@ export function FloorCanvas({ width, height }: Props) {
         if (main) { main.points(pts); layer = main.getLayer(); }
         if (ol) ol.points(pts);
       });
-      layer?.batchDraw();
+      layer?.draw();
       return;
     }
     if (marqueeStart.current) {

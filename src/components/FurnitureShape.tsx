@@ -1,4 +1,4 @@
-import { Group, Rect, Text, Line, Circle, Arc } from 'react-konva';
+import { Group, Rect, Text, Line, Circle } from 'react-konva';
 import type { FurnitureItem } from '../types';
 import type Konva from 'konva';
 
@@ -8,12 +8,13 @@ interface Props {
   ghost?: boolean;
   opacity?: number;
   draggable?: boolean;
-  onClick?: () => void;
+  onClick?: (e: Konva.KonvaEventObject<MouseEvent>) => void;
+  onDragStart?: (e: Konva.KonvaEventObject<DragEvent>) => void;
   onDragEnd?: (e: Konva.KonvaEventObject<DragEvent>) => void;
   onTransformEnd?: (e: Konva.KonvaEventObject<Event>) => void;
 }
 
-export function FurnitureShape({ item, selected, ghost, opacity = 1, draggable, onClick, onDragEnd, onTransformEnd }: Props) {
+export function FurnitureShape({ item, selected, ghost, opacity = 1, draggable, onClick, onDragStart, onDragEnd, onTransformEnd }: Props) {
   const baseOpacity = ghost ? 0.35 : opacity;
   const strokeColor = selected ? '#3b82f6' : ghost ? '#f97316' : '#64748b';
   const strokeWidth = selected ? 2 : 1;
@@ -36,6 +37,7 @@ export function FurnitureShape({ item, selected, ghost, opacity = 1, draggable, 
       offsetY={h / 2}
       draggable={draggable}
       onClick={onClick}
+      onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onTransformEnd={onTransformEnd}
       opacity={baseOpacity}

@@ -39,7 +39,7 @@ function loadSaved(): { project: Project; apiKey: string; activePanel: ActivePan
         ...v,
         rooms: (v.rooms ?? []),
         detectedFurniture: (v.detectedFurniture ?? []),
-        walls: (v.walls ?? []).map((w: import('./types').Wall) => ({ material: 'concrete' as const, height: 2.7, ...w })),
+        walls: (v.walls ?? []).map((w: import('./types').Wall) => ({ ...w, material: w.material ?? ('concrete' as const), height: w.height ?? 2.7 })),
       }));
     }
     return data;
@@ -327,7 +327,7 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   deleteSelectedItems: () => {
-    const { selectedItemIds, project } = get();
+    const { selectedItemIds } = get();
     if (!selectedItemIds.length) return;
     get().pushUndo();
     const idSet = new Set(selectedItemIds);
