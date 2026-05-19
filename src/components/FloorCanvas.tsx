@@ -138,6 +138,7 @@ export function FloorCanvas({ width, height }: Props) {
   const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null);
   const [showRooms, setShowRooms] = useState(true);
   const [showDetectedFurniture, setShowDetectedFurniture] = useState(true);
+  const [showGrid, setShowGrid] = useState(false);
   const [wallStart, setWallStart] = useState<{ x: number; y: number } | null>(null);
   const [wallPreview, setWallPreview] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
   const [snapTarget, setSnapTarget] = useState<{ x: number; y: number } | null>(null);
@@ -374,8 +375,12 @@ export function FloorCanvas({ width, height }: Props) {
     >
       {/* HUD */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-1 pointer-events-none">
-        <div className="bg-slate-800/80 text-slate-300 text-xs px-2 py-1 rounded">
-          {(100 / av.scale).toFixed(2)} cm/px · {(hudScale * 100).toFixed(0)}% zoom
+        <div className="bg-slate-800/80 text-slate-300 text-xs px-2 py-1 rounded flex items-center gap-2">
+          <span>{(100 / av.scale).toFixed(2)} cm/px · {(hudScale * 100).toFixed(0)}% zoom</span>
+          <label className="flex items-center gap-1 cursor-pointer pointer-events-auto">
+            <input type="checkbox" checked={showGrid} onChange={e => setShowGrid(e.target.checked)} className="accent-blue-500" />
+            Grid (1 ft)
+          </label>
         </div>
         {hasDetection && (
           <div className="bg-slate-800/80 text-slate-300 text-xs px-2 py-1 rounded flex gap-3 pointer-events-auto">
@@ -437,6 +442,23 @@ export function FloorCanvas({ width, height }: Props) {
           ))}
           {bgImage && <KonvaImage image={bgImage} x={0} y={0} width={bgImage.naturalWidth} height={bgImage.naturalHeight} opacity={0.9} listening={false} />}
         </Layer>
+
+        {/* 1-ft measurement grid */}
+        {showGrid && (() => {
+          const ftPx = 0.3048 * av.scale;
+          const min = -60 * ftPx;
+          const max = 250 * ftPx;
+          const count = Math.round((max - min) / ftPx);
+          const vLines: JSX.Element[] = [];
+          const hLines: JSX.Element[] = [];
+          for (let i = 0; i <= count; i++) {
+            const pos = min + i * ftPx;
+            const isMajor = i % 5 === 0;
+            vLines.push(<Line key={`gv${i}`} points={[pos, min, pos, max]} stroke={isMajor ? '#2d4a6e' : '#1a2f47'} strokeWidth={isMajor ? 0.8 : 0.4} listening={false} />);
+            hLines.push(<Line key={`gh${i}`} points={[min, pos, max, pos]} stroke={isMajor ? '#2d4a6e' : '#1a2f47'} strokeWidth={isMajor ? 0.8 : 0.4} listening={false} />);
+          }
+          return <Layer listening={false}>{vLines}{hLines}</Layer>;
+        })()}
 
         {/* Room / detected furniture overlays */}
         <Layer listening={false}>
