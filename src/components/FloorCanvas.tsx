@@ -461,8 +461,8 @@ export function FloorCanvas({ width, height }: Props) {
           for (let i = 0; i <= count; i++) {
             const pos = min + i * ftPx;
             const isMajor = i % 5 === 0;
-            vLines.push(<Line key={`gv${i}`} points={[pos, min, pos, max]} stroke={isMajor ? '#3b82f6' : '#93c5fd'} strokeWidth={isMajor ? 1 : 0.4} opacity={isMajor ? 0.55 : 0.3} listening={false} />);
-            hLines.push(<Line key={`gh${i}`} points={[min, pos, max, pos]} stroke={isMajor ? '#3b82f6' : '#93c5fd'} strokeWidth={isMajor ? 1 : 0.4} opacity={isMajor ? 0.55 : 0.3} listening={false} />);
+            vLines.push(<Line key={`gv${i}`} points={[pos, min, pos, max]} stroke={isMajor ? '#2563eb' : '#60a5fa'} strokeWidth={isMajor ? 1.5 : 0.8} opacity={isMajor ? 0.8 : 0.45} strokeScaleEnabled={false} listening={false} />);
+            hLines.push(<Line key={`gh${i}`} points={[min, pos, max, pos]} stroke={isMajor ? '#2563eb' : '#60a5fa'} strokeWidth={isMajor ? 1.5 : 0.8} opacity={isMajor ? 0.8 : 0.45} strokeScaleEnabled={false} listening={false} />);
           }
           return <Layer listening={false}>{vLines}{hLines}</Layer>;
         })()}
